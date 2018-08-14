@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "An API based on Twitter",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node dist",
+    "build": "rimraf dist && babel src -D -d dist",
+    "dev": "nodemon ./src/ --exec babel-node"
+  },
+  "author": "Marco Túlio Terra",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-rc.1",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/node": "^7.0.0-rc.1",
+    "@babel/polyfill": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.3.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^2.6.2",
+    "nodemon": "^1.18.3",
+    "prettier": "^1.14.2",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.8",
+    "morgan": "^1.9.0"
+  }
+}
