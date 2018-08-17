@@ -42,7 +42,10 @@ const findOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const response = await Tweet.create(req.body);
+    const response = await Tweet.create({
+      user: req.userId,
+      content: req.body.content
+    });
 
     return res.json(response);
   } catch (error) {

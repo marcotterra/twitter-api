@@ -16,6 +16,6 @@ router.delete("/:username", controller.remove);
 
 router.post("/auth", controller.auth);
 
-router.get("/profile/", auth, controller.profile);
+router.get("/profile", auth, controller.profile);
 
 export default router;

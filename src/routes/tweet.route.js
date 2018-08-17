@@ -1,16 +1,17 @@
 import express from "express";
 import * as controller from "../controllers/tweet.controller";
+import authMiddleware from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.get("/p/:page?", controller.index);
+router.get("/p/:page?", authMiddleware, controller.index);
 
-router.get("/:id", controller.findOne);
+router.get("/:id", authMiddleware, controller.findOne);
 
-router.post("/", controller.create);
+router.post("/", authMiddleware, controller.create);
 
-router.put("/:id", controller.findOneAndUpdate);
+router.put("/:id", authMiddleware, controller.findOneAndUpdate);
 
-router.delete(":/id", controller.remove);
+router.delete(":/id", authMiddleware, controller.remove);
 
 export default router;
