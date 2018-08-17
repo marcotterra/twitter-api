@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch with nodemon",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/nodemon/bin/nodemon.js",
+      "args": ["dev"],
+      "runtimeArgs": [
+        "--nolazy",
+        "@babel/register"
+      ],
+      "sourceMaps": true,
+      "console": "integratedTerminal",
+      "diagnosticLogging": true,
+      "outDir": "${workspaceRoot}/dist"
+    }
+  ]
+}
