@@ -5,12 +5,14 @@ const index = async (req, res) => {
     const response = await User.find();
 
     if (response) {
-      res.json(response);
+      return res.json(response);
     } else {
-      res.status(404).json({ message: "User does'nt have content yet." });
+      return res
+        .status(404)
+        .json({ message: "User does'nt have content yet." });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -21,26 +23,26 @@ const findOne = async (req, res) => {
     const response = await User.findOne(username);
 
     if (response) {
-      res.json(response);
+      return res.json(response);
     } else {
-      res.status(404).json({ message: "User doesn't exist." });
+      return res.status(404).json({ message: "User doesn't exist." });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
 const create = async (req, res) => {
-  const { name, username, about } = req.body;
+  const { name, username, password, about } = req.body;
 
   try {
-    const usr = User.create(name, username, about);
+    const response = await User.create({ name, username, password, about });
 
-    const response = await usr.save();
+    console.log(response);
 
-    res.json(response);
+    return res.json({ message: `${username} saved` });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -67,9 +69,9 @@ const remove = async (req, res) => {
   try {
     const response = await User.findOneAndRemove(username);
 
-    res.json(response);
+    return res.json(response);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
