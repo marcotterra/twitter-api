@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
 
     const decoded = await promisify(jwt.verify)(token, config.SECRET_KEY);
 
-    req.userId = decoded.id;
+    req.userData = decoded;
 
     return next();
   } catch (error) {

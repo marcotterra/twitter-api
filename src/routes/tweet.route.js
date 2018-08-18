@@ -4,9 +4,9 @@ import authMiddleware from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.get("/p/:page?", authMiddleware, controller.index);
+router.get("/:page?", controller.index);
 
-router.get("/:id", authMiddleware, controller.findOne);
+router.get("/id/:id", controller.findOne);
 
 router.post("/", authMiddleware, controller.create);
 

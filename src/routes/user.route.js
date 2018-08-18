@@ -18,4 +18,8 @@ router.post("/auth", controller.auth);
 
 router.get("/profile", auth, controller.profile);
 
+router.post("/follow/:username?", auth, controller.follow);
+
+router.get("/followed/:username?", controller.followed);
+
 export default router;

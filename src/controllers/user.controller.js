@@ -3,7 +3,7 @@ import Tweet from "../models/tweet.model";
 
 const index = async (req, res) => {
   try {
-    const response = await User.find();
+    const response = await User.find().select("-_id -password");
 
     if (!response)
       return res
@@ -20,7 +20,7 @@ const findOne = async (req, res) => {
   const { username } = req.params;
 
   try {
-    const response = await User.findOne({ username });
+    const response = await User.findOne({ username }).select("-_id -password");
 
     if (!response)
       return res.status(404).json({ message: "User doesn't exist." });
@@ -50,7 +50,7 @@ const findOneAndUpdate = async (req, res) => {
       { username },
       { name, about },
       { new: true }
-    );
+    ).select("-_id -password");
 
     res.json(response);
   } catch (error) {
@@ -94,7 +94,7 @@ const auth = async (req, res) => {
 
 const profile = async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const user = await User.findById(req.userData.id).select("-_id -password");
 
     if (!user) // eslint-disable-line
       return res.json({ message: "error" });
@@ -107,4 +107,69 @@ const profile = async (req, res) => {
   }
 };
 
-export { index, findOne, create, findOneAndUpdate, remove, auth, profile };
+const follow = async (req, res) => {
+  try {
+    const response = await User.findOneAndUpdate(
+      { username: req.params.username },
+      { $push: { followed: req.userData.id } },
+      { safe: true, upsert: true }
+    ).select("-_id -password");
+
+    if (!response)
+      return res.status(400).json({ message: "Someting has happen" });
+
+    return res.json({ message: "Sucess" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const unfollow = async (req, res) => {
+  try {
+    const toFollow = await User.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { followed: req.userData.id } },
+      { safe: true, upsert: true }
+    ).select("-_id -password");
+
+    if (!toFollow) {
+      console.log(toFollow);
+      return res.status(400).json({ message: "Someting has happen" });
+    }
+
+    console.log(toFollow);
+    return res.json({ message: "Success" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const followed = async (req, res) => {
+  try {
+    let response = {};
+
+    if (req.params.username)
+      response = await User.findOne({ username: req.params.username }).select(
+        "-_id -password"
+      );
+
+    response = await User.findById(req.userData.id).select("-_id -password");
+
+    return res.json(response["followed"]);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export {
+  index,
+  findOne,
+  create,
+  findOneAndUpdate,
+  remove,
+  auth,
+  profile,
+  follow,
+  unfollow,
+  followed
+};

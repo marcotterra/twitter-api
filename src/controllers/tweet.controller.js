@@ -1,38 +1,26 @@
 import Tweet from "../models/tweet.model";
-import config from "../config";
 
 const index = async (req, res) => {
-  let perPage = config.TWEET_PER_PAGE;
-  let page = req.params.page || 1;
   try {
-    const response = await Tweet.find({})
-      .skip(perPage * page)
-      .limit(parseInt(perPage));
-
-    const count = await Tweet.countDocuments(response);
+    const response = await Tweet.find();
 
     if (!response)
       return res.status(404).json({ message: " does'nt have any tweet yet." });
 
-    return res.json({
-      tweets: response,
-      pages: Math.ceil(count / perPage) - 1,
-      current: parseInt(page)
-    });
+    return res.json(response);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
 const findOne = async (req, res) => {
-  let { id } = req.params;
   try {
-    const original = await Tweet.findById(id);
-
-    const replies = await Tweet.find({ reply: original._id });
+    const original = await Tweet.findById(req.params.id);
 
     if (!original)
       return res.status(404).json({ message: "Tweet doesn't exist." });
+
+    const replies = await Tweet.find({ reply: original._id });
 
     return res.json({ tweet: original, replies: replies });
   } catch (error) {
@@ -43,7 +31,7 @@ const findOne = async (req, res) => {
 const create = async (req, res) => {
   try {
     const response = await Tweet.create({
-      user: req.userId,
+      user: req.userData.id,
       content: req.body.content
     });
 
