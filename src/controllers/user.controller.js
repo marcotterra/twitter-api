@@ -132,12 +132,9 @@ const unfollow = async (req, res) => {
       { safe: true, upsert: true }
     ).select("-_id -password");
 
-    if (!toFollow) {
-      console.log(toFollow);
+    if (!toFollow)
       return res.status(400).json({ message: "Someting has happen" });
-    }
 
-    console.log(toFollow);
     return res.json({ message: "Success" });
   } catch (error) {
     return res.status(500).json({ message: error.message });

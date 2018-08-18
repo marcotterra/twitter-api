@@ -20,7 +20,7 @@ const findOne = async (req, res) => {
     if (!original)
       return res.status(404).json({ message: "Tweet doesn't exist." });
 
-    const replies = await Tweet.find({ reply: original._id });
+    const replies = await Tweet.find({ reply: original.id });
 
     return res.json({ tweet: original, replies: replies });
   } catch (error) {
@@ -31,6 +31,7 @@ const findOne = async (req, res) => {
 const create = async (req, res) => {
   try {
     const response = await Tweet.create({
+      reply: req.params.id,
       user: req.userData.id,
       content: req.body.content
     });
