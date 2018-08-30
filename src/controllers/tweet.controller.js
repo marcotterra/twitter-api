@@ -33,7 +33,7 @@ const create = async (req, res) => {
     const response = await Tweet.create({
       reply: req.params.id,
       user: req.userData.id,
-      content: req.body.content
+      tweet: req.body.tweet
     });
 
     return res.json(response);
