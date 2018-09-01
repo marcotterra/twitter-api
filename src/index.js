@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import config from "./config";
 import userRouter from "./routes/user.route";
 import tweetRouter from "./routes/tweet.route";
+import authRouter from "./routes/auth.route";
 
 // Mongo connection
 mongoose
@@ -34,7 +35,8 @@ app.get("/", (req, res) => {
   res.json({ created_by: "@marcotterra" });
 });
 
-app.use("/user", userRouter);
-app.use("/tweet", tweetRouter);
+app.use("/users", userRouter);
+app.use("/tweets", tweetRouter);
+app.use("/auth", authRouter);
 
 app.listen(config.PORT, () => console.log(`Listening at port ${config.PORT}`));

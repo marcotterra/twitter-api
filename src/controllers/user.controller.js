@@ -76,7 +76,8 @@ const auth = async (req, res) => {
   try {
     const user = await User.findOne({ username });
 
-    if (!user) // eslint-disable-line
+    if (!user)
+      // eslint-disable-line
       return res.json(404).json({ message: "Email not found" });
 
     const passwordHash = await user.compareHash(password);
@@ -94,14 +95,17 @@ const auth = async (req, res) => {
 
 const profile = async (req, res) => {
   try {
-    const user = await User.findById(req.userData.id).select("-_id -password");
+    const user = await User.findById(req.userData.id).select("-password");
 
-    if (!user) // eslint-disable-line
-      return res.json({ message: "error" });
+    if (!user)
+      // eslint-disable-line
+      return Error("User was broken");
 
-    const tweets = await Tweet.find({ user: user._id });
+    const tweets = await Tweet.find({ user: user.id });
 
-    return res.json(tweets);
+    console.log(user);
+
+    return res.json({ user, tweets });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
